@@ -365,44 +365,14 @@ img {
 
 /* Hero Section */
 .hero {
-    position: relative;
-    overflow: hidden;
     height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('assets/hero_bg.jpg') no-repeat center center/cover;
+    background-attachment: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: var(--white);
-}
-
-.hero-slider {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-
-.hero-slider .slide {
-    position: absolute;
-    top: 0;
-    left: 100%;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 1s ease, left 1s ease;
-}
-
-.hero-slider .slide.active {
-    left: 0;
-    opacity: 1;
-}
-
-.hero-slider .slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
 .hero-content {
@@ -562,39 +532,37 @@ img {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: auto;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 30px 20px;
+    padding: 15px;
     opacity: 1;
     transition: var(--transition);
-    z-index: 2;
+    z-index: 10;
+}
+
+.gallery-item:hover .overlay {
+    background: rgba(0, 0, 0, 0.85);
+    padding-bottom: 20px;
 }
 
 .gallery-item .overlay h3 {
-    color: var(--primary-color);
+    color: #ffffff;
     font-family: var(--font-heading);
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     border-bottom: 2px solid var(--primary-color);
-    padding-bottom: 10px;
+    padding-bottom: 5px;
     margin: 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-}
-
-.gallery-item .overlay h3 {
-    color: var(--primary-color);
-    font-family: var(--font-heading);
-    font-size: 1.8rem;
-    border-bottom: 2px solid var(--primary-color);
-    padding-bottom: 10px;
-    transform: translateY(0);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+    transform: none;
     transition: var(--transition);
 }
 
 .gallery-item:hover .overlay h3 {
-    transform: scale(1.05);
+    transform: scale(1.1);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 /* Contact Section */

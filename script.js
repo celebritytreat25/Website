@@ -155,18 +155,4 @@ window.addEventListener('scroll', () => {
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 });
 
-// Header Image Slider
-const heroSlides = document.querySelectorAll('.hero-slider .slide');
-let currentSlide = 0;
-function showHeroSlide(index) {
-    heroSlides.forEach((slide, i) => {
-        slide.classList.toggle('active', i === index);
-    });
-}
-if (heroSlides.length > 0) {
-    showHeroSlide(currentSlide);
-    setInterval(() => {
-        currentSlide = (currentSlide + 1) % heroSlides.length;
-        showHeroSlide(currentSlide);
-    }, 5000); // Change slide every 5 seconds
-}
+
