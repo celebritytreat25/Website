@@ -39,22 +39,23 @@ if (menuIcon) {
     });
 }
 
-// Scroll Animations
-const revealElements = document.querySelectorAll('.reveal');
+// Scroll Animations with Intersection Observer
+const observerOptions = {
+    threshold: 0.15,
+    rootMargin: "0px 0px -50px 0px"
+};
 
-const revealObserver = new IntersectionObserver((entries, observer) => {
+const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('active');
-            observer.unobserve(entry.target);
+            observer.unobserve(entry.target); // Only animate once
         }
     });
-}, {
-    root: null,
-    threshold: 0.15
-});
+}, observerOptions);
 
-revealElements.forEach(el => revealObserver.observe(el));
+const revealElements = document.querySelectorAll('.reveal, .reveal-up, .reveal-left, .reveal-right, .zoom-in');
+revealElements.forEach(el => observer.observe(el));
 
 // Loader and Smooth Scroll Logic
 const loader = document.querySelector('.page-loader');
@@ -130,29 +131,85 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Smart Navbar - Hide on scroll down, show on scroll up
-const header = document.querySelector('.header');
-let lastScrollTop = 0;
-const scrollThreshold = 100; // Start hiding after scrolling this many pixels
+// Smart Navbar - Logic removed to keep navbar always visible
 
-window.addEventListener('scroll', () => {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+// Lightbox Logic
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const captionText = document.querySelector('.lightbox-caption');
+const closeBtn = document.querySelector('.close-lightbox');
+const galleryItems = document.querySelectorAll('.gallery-item'); // Select container
+const galleryOverlays = document.querySelectorAll('.gallery-item .overlay h3');
 
-    // Don't hide when near the top of the page
-    if (scrollTop < scrollThreshold) {
-        header.classList.remove('hidden');
-    } else {
-        // Scrolling down
-        if (scrollTop > lastScrollTop) {
-            header.classList.add('hidden');
-        }
-        // Scrolling up
-        else {
-            header.classList.remove('hidden');
-        }
-    }
+let currentIndex = 0;
 
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+// Open Lightbox
+galleryItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+        lightbox.style.display = 'block';
+        const img = item.querySelector('img');
+        lightboxImg.src = img.src;
+        captionText.innerHTML = galleryOverlays[index].innerHTML;
+        currentIndex = index;
+        document.body.style.overflow = 'hidden'; // Disable scrolling
+    });
 });
 
+// Close Lightbox
+function closeLightboxModal() {
+    lightbox.style.display = 'none';
+    document.body.style.overflow = 'auto'; // Enable scrolling
+}
 
+if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent bubbling
+        closeLightboxModal();
+    });
+}
+
+// Close on outside click
+if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            closeLightboxModal();
+        }
+    });
+}
+
+// Change Slide
+function changeSlide(n) {
+    currentIndex += n;
+    if (currentIndex >= galleryItems.length) {
+        currentIndex = 0;
+    } else if (currentIndex < 0) {
+        currentIndex = galleryItems.length - 1;
+    }
+    const img = galleryItems[currentIndex].querySelector('img');
+    lightboxImg.src = img.src;
+    captionText.innerHTML = galleryOverlays[currentIndex].innerHTML;
+}
+
+const prevBtn = document.querySelector('.prev');
+const nextBtn = document.querySelector('.next');
+
+if (prevBtn) {
+    prevBtn.addEventListener('click', () => changeSlide(-1));
+}
+
+if (nextBtn) {
+    nextBtn.addEventListener('click', () => changeSlide(1));
+}
+
+// Keyboard Navigation
+document.addEventListener('keydown', (e) => {
+    if (lightbox && lightbox.style.display === 'block') {
+        if (e.key === 'Escape') {
+            closeLightboxModal();
+        } else if (e.key === 'ArrowLeft') {
+            changeSlide(-1);
+        } else if (e.key === 'ArrowRight') {
+            changeSlide(1);
+        }
+    }
+});
