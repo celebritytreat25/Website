@@ -213,3 +213,69 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
+// FAQ Chatbox Logic
+const chatWindow = document.getElementById('chatWindow');
+const chatMessages = document.getElementById('chatMessages');
+const chatInputArea = document.getElementById('chatInputArea');
+
+const faqData = [
+    {
+        question: "What services do you offer?",
+        answer: "We specialize in Weddings, Corporate Events, Birthday Parties, Baby Showers, and more! We handle everything from planning to execution."
+    },
+    {
+        question: "How can I book an event?",
+        answer: "You can fill out the contact form on this page, or call us directly at +91-79 7715 1148 to schedule a consultation."
+    },
+    {
+        question: "Where are you located?",
+        answer: "We are based in Office 1/2/3/4,Shiv Empire, Plot-168, Sector 2,Ulwe Node, Navi Mumbai, Maharashtra 410206, but we manage events across the entire region and beyond."
+    },
+    {
+        question: "Do you provide custom packages?",
+        answer: "Yes! We tailor every event to your specific needs, preferences, and budget. Let's discuss your vision!"
+    }
+];
+
+function toggleChat() {
+    chatWindow.classList.toggle('active');
+    if (chatWindow.classList.contains('active') && chatMessages.children.length === 0) {
+        // First open
+        setTimeout(() => {
+            addMessage("Hi there! 👋 How can we help you today?", 'bot');
+            showQuestions();
+        }, 500);
+    }
+}
+
+function addMessage(text, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', sender);
+    messageDiv.textContent = text;
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function showQuestions() {
+    chatInputArea.innerHTML = ''; // Clear previous options
+    faqData.forEach(item => {
+        const btn = document.createElement('button');
+        btn.classList.add('question-btn');
+        btn.textContent = item.question;
+        btn.onclick = () => handleQuestionClick(item);
+        chatInputArea.appendChild(btn);
+    });
+}
+
+function handleQuestionClick(item) {
+    addMessage(item.question, 'user');
+    chatInputArea.innerHTML = ''; // Hide options while answering
+
+    // Simulate typing delay
+    setTimeout(() => {
+        addMessage(item.answer, 'bot');
+        // Show options again after answer
+        setTimeout(showQuestions, 1000);
+    }, 600);
+}

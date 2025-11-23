@@ -329,6 +329,30 @@
         <a class="next">&#10095;</a>
     </div>
 
+    <!-- Chatbox Widget -->
+    <div class="chat-widget">
+        <button class="chat-toggle" onclick="toggleChat()">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="chat-title-group">
+                    <img src="assets/logo.png" alt="Celebrity Treat" class="chat-logo">
+                    <h3>Chat with Us</h3>
+                </div>
+                <button class="close-chat" onclick="toggleChat()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be added here dynamically -->
+            </div>
+            <div class="chat-input-area" id="chatInputArea">
+                <!-- Question options will be added here -->
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 
